@@ -1,23 +1,16 @@
-# Compiled class file
-*.class
-
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+/BitDisplay$1.class
+/BitDisplay.class
+/BitHandler$1.class
+/BitHandler.class
+/BitListener.class
+/LightDisplay.class
+/LightPanel.class
+/LightSystem.class
+/LightSystemThread.class
+/Test.class
+/.metadata
+/.project
+/.classpath
+/CollisionException.class
+/TestServer.class
+/TestClient.class
