@@ -12,8 +12,14 @@ public class L2Frame {
         this.payloadSize = payload.length();
     }
 
-    public static String toBinary(Integer number, Integer length) {
-        return "";
+    public static String toBinary(int number, Integer length) {
+        String result = "";
+        for(int i = 0; i < length; i++) {
+            result += new Integer(number % 2).toString();
+            number /= 2;
+            
+        }
+        return result;
     }
 
     public Integer getDest() {
