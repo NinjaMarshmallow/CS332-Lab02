@@ -9,6 +9,7 @@ public class TestServer {
 		LightSystem system = new LightSystem();
 		LightDisplay d1 = new LightDisplay(new LightPanel());
 		BitDisplay bd = new BitDisplay(new BitHandler());
+		Layer2Display l2d = new Layer2Display(new L2Handler(5));
 	}
 
 	private static void runTests() {
@@ -16,12 +17,12 @@ public class TestServer {
 		System.out.println("L2Frame Passed.");
 	}
 
-	private void testL2Frame() {
+	private static void testL2Frame() {
 		testToBinary();
 		L2Frame frame = new L2Frame(7, 3, 0, 0, "010101010101");
 	}
 
-	private void testToBinary() {
+	private static void testToBinary() {
 		Integer five = 5, seven = 7, fifteen = 15;
 		Integer length = 4;
 		String bitString = L2Frame.toBinary(five, length);
