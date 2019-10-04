@@ -57,4 +57,8 @@ public class Layer2Display implements ActionListener, Layer2Listener {
         }.start();
     }
 
+    public void frameReceived(L2Handler handler, L2Frame frame) {
+        displayField.setText(frame.toString());
+    }
+
 }
