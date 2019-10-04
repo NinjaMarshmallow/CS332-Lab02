@@ -21,6 +21,20 @@ public class L2Frame {
         this.payloadSize = payload.length();
     }
 
+    public L2Frame(String bitString) throws Exception {
+        this.dest = Integer.parseInt(bitString.substring(0, 4));
+        this.source = Integer.parseInt(bitString.substring(4, 8));
+        this.type = Integer.parseInt(bitString.substring(8, 10));
+        this.vlanid = Integer.parseInt(bitString.substring(10, 12));
+        this.payloadSize = Integer.parseInt(bitString.substring(12, 14));
+        int bitStringLength = bitString.length();
+        int payloadEndIndex = 14 + this.payloadSize;
+        if(payloadEndIndex > bitStringLength) {
+            throw new Exception("This Frame is not valid");
+        }
+        this.payload = bitString.substring(14, payloadEndIndex);
+    }
+
     public static String toBinary(int number, Integer length) {
         String result = "";
         for(int i = 0; i < length; i++) {
