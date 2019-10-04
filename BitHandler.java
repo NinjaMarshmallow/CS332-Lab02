@@ -107,7 +107,7 @@ public class BitHandler extends Thread {
 			panel.switchOff();
 		}
 		else {
-			throw new InvalidParameterException("'bits' must be a String consisting only og 0s and 1s");
+			throw new InvalidParameterException("'bits' must be a String consisting only of 0s and 1s");
 		}
 	}
 
