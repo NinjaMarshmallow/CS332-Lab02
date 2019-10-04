@@ -1,6 +1,6 @@
 public class L2Frame {
 
-    private final static String BCAST_ADDR = "1111";
+    public final static String BCAST_ADDR = "1111";
     private final static int DEST_LENGTH = 4;
     private final static int SRC_LENGTH = 4;
     private final static int TYPE_LENGTH = 2;
@@ -21,7 +21,7 @@ public class L2Frame {
         this.payloadSize = payload.length();
     }
 
-    public L2Frame(String bitString) throws Exception {
+    public L2Frame(String bitString) throws IllegalArgumentException {
         this.dest = Integer.parseInt(bitString.substring(0, 4));
         this.source = Integer.parseInt(bitString.substring(4, 8));
         this.type = Integer.parseInt(bitString.substring(8, 10));
@@ -30,7 +30,7 @@ public class L2Frame {
         int bitStringLength = bitString.length();
         int payloadEndIndex = 14 + this.payloadSize;
         if(payloadEndIndex > bitStringLength) {
-            throw new Exception("This Frame is not valid");
+            throw new IllegalArgumentException("This Frame is not valid");
         }
         this.payload = bitString.substring(14, payloadEndIndex);
     }
@@ -38,7 +38,7 @@ public class L2Frame {
     public static String toBinary(int number, Integer length) {
         String result = "";
         for(int i = 0; i < length; i++) {
-            result = new Integer(number % 2).toString() + result;
+            result = Integer.valueOf(number % 2).toString() + result;
             number /= 2;   
         }
         return result;

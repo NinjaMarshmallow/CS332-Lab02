@@ -21,11 +21,22 @@ public class L2Handler implements BitListener {
     }
 
     public void bitsReceived(BitHandler handler, String bits) {
-
+        try {
+            L2Frame frame = new L2Frame(bits);
+            if (frame.getDest() == macAddr || frame.getDest() == Integer.parseInt(L2Frame.BCAST_ADDR, 2)) {
+                layer2Listener.frameReceived(L2Handler.this, frame);
+            }
+            else {
+                // Drop packet
+            }
+        }
+        catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setListener(Layer2Listener l) {
-		layer2Listener = l;
+		this.layer2Listener = l;
     }
     
     public Integer getMacAddr() {

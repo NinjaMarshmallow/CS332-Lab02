@@ -3,13 +3,14 @@
  * LightSystem for Layer 1 Communication with Clients. 
  * The BitDisplays allows for sending data over the light system.
  */
-public class TestServer {
+public class Test {
 	public static void main(String args[]) {
 		runTests();
 		LightSystem system = new LightSystem();
 		LightDisplay d1 = new LightDisplay(new LightPanel());
-		BitDisplay bd = new BitDisplay(new BitHandler());
-		Layer2Display l2d = new Layer2Display(new L2Handler(5));
+		//BitDisplay bd = new BitDisplay(new BitHandler());
+		Layer2Display l2d1 = new Layer2Display(new L2Handler(1));
+		Layer2Display l2d2 = new Layer2Display(new L2Handler(2));
 	}
 
 	private static void runTests() {
