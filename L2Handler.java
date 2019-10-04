@@ -26,6 +26,23 @@ public class L2Handler implements BitListener {
 
     public void setListener(Layer2Listener l) {
 		layer2Listener = l;
-	}
+    }
+    
+    public Integer getMacAddr() {
+        return macAddr;
+    }
+
+    public void send(L2Frame frame) {
+        while (!handler.isSilent()) {
+            BitHandler.pause(BitHandler.HALFPERIOD);
+        }
+        try {
+            handler.broadcast(frame.toString());
+        }
+        catch (CollisionException e) {
+            // Should never get here
+            e.printStackTrace();
+        }
+    }
 
 }

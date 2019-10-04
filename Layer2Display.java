@@ -4,7 +4,9 @@ import javax.swing.*;
 public class Layer2Display implements ActionListener, Layer2Listener {
     private L2Handler handler;
     private JTextField displayField;
-    private JTextField addressField;
+    private JTextField destinationAddressField;
+    private JTextField typeField;
+    private JTextField vlanField;
     private JTextField payloadField;
 
     public Layer2Display(L2Handler handler) {
@@ -18,11 +20,23 @@ public class Layer2Display implements ActionListener, Layer2Listener {
         displayField.setEditable(false);
         frame.getContentPane().add(displayField);
 
-        frame.getContentPane().add(new JLabel("Address:"));
+        frame.getContentPane().add(new JLabel("Destination Address:"));
 
-        addressField = new JTextField(20);
-        addressField.addActionListener(this);
-        frame.getContentPane().add(addressField);
+        destinationAddressField = new JTextField(20);
+        destinationAddressField.addActionListener(this);
+        frame.getContentPane().add(destinationAddressField);
+
+        frame.getContentPane().add(new JLabel("Type:"));
+
+        typeField = new JTextField(20);
+        typeField.addActionListener(this);
+        frame.getContentPane().add(typeField);
+
+        frame.getContentPane().add(new JLabel("VLAN Id:"));
+
+        vlanField = new JTextField(20);
+        vlanField.addActionListener(this);
+        frame.getContentPane().add(vlanField);
 
         frame.getContentPane().add(new JLabel("Payload:"));
 
@@ -38,9 +52,13 @@ public class Layer2Display implements ActionListener, Layer2Listener {
         displayField.setText("Sending...");
         new Thread() {
             public void run() {
-                /* SEND LAYER2 FRAME HERE */
+                handler.send(new L2Frame(handler.getMacAddr(), Integer.valueOf(destinationAddressField.getText()), Integer.valueOf(typeField.getText()), Integer.valueOf(vlanField.getText()), payloadField.getText()));
             }
         }.start();
+    }
+
+    public void frameReceived(L2Handler handler, L2Frame frame) {
+        displayField.setText(frame.toString());
     }
 
 }
