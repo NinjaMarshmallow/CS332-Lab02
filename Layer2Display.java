@@ -1,3 +1,6 @@
+/** Layer2Display creates a JFrame window on screen that
+ * holds text fields to build and send an L2Frame
+ */
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -9,6 +12,10 @@ public class Layer2Display implements ActionListener, Layer2Listener {
     private JTextField vlanField;
     private JTextField payloadField;
 
+    /** An explicit constructor for a Layer2Display that creates
+     * the JFrame window on screen and the text fields.
+     * @param handler the handler used to send the defined L2Frame
+     */
     public Layer2Display(L2Handler handler) {
         this.handler = handler;
         handler.setListener(this);
@@ -48,6 +55,8 @@ public class Layer2Display implements ActionListener, Layer2Listener {
         frame.setVisible(true);
     }
 
+    /** actionPerformed() sends an L2Frame when 'Enter' is pressed
+     */
     public void actionPerformed(ActionEvent e) {
         displayField.setText("Sending...");
         new Thread() {
@@ -57,6 +66,9 @@ public class Layer2Display implements ActionListener, Layer2Listener {
         }.start();
     }
 
+    /** frameReceived() sets the displayField when a frame is received from 
+     * Layer 2 and designated for the macAddr of handler
+     */
     public void frameReceived(L2Handler handler, L2Frame frame) {
         displayField.setText(frame.toString());
     }
