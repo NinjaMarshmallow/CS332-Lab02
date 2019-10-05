@@ -7,10 +7,11 @@ public class Test {
 	public static void main(String args[]) {
 		runTests();
 		LightSystem system = new LightSystem();
-		LightDisplay d1 = new LightDisplay(new LightPanel());
+		//LightDisplay d1 = new LightDisplay(new LightPanel());
 		//BitDisplay bd = new BitDisplay(new BitHandler());
 		Layer2Display l2d1 = new Layer2Display(new L2Handler(1));
 		Layer2Display l2d2 = new Layer2Display(new L2Handler(2));
+		Layer2Display l2d3 = new Layer2Display(new L2Handler(3));
 	}
 
 	private static void runTests() {

@@ -22,17 +22,22 @@ public class L2Frame {
     }
 
     public L2Frame(String bitString) throws IllegalArgumentException {
-        this.dest = Integer.parseInt(bitString.substring(0, 4));
-        this.source = Integer.parseInt(bitString.substring(4, 8));
-        this.type = Integer.parseInt(bitString.substring(8, 10));
-        this.vlanid = Integer.parseInt(bitString.substring(10, 12));
-        this.payloadSize = Integer.parseInt(bitString.substring(12, 14));
+        int destEndIndex = 1+L2Frame.DEST_LENGTH;
+        int srcEndIndex = destEndIndex+L2Frame.SRC_LENGTH;
+        int typeEndIndex = srcEndIndex+L2Frame.TYPE_LENGTH;
+        int vlanidEndIndex = typeEndIndex+L2Frame.VLAN_LENGTH;
+        int payloadSizeEndIndex = vlanidEndIndex+L2Frame.PAYLOAD_SIZE_LENGTH;
+        this.dest = Integer.parseInt(bitString.substring(1, destEndIndex), 2);
+        this.source = Integer.parseInt(bitString.substring(destEndIndex, srcEndIndex), 2);
+        this.type = Integer.parseInt(bitString.substring(srcEndIndex, typeEndIndex), 2);
+        this.vlanid = Integer.parseInt(bitString.substring(typeEndIndex, vlanidEndIndex), 2);
+        this.payloadSize = Integer.parseInt(bitString.substring(vlanidEndIndex, payloadSizeEndIndex), 2);
         int bitStringLength = bitString.length();
-        int payloadEndIndex = 14 + this.payloadSize;
+        int payloadEndIndex = payloadSizeEndIndex + this.payloadSize;
         if(payloadEndIndex > bitStringLength) {
             throw new IllegalArgumentException("This Frame is not valid");
         }
-        this.payload = bitString.substring(14, payloadEndIndex);
+        this.payload = bitString.substring(payloadSizeEndIndex, payloadEndIndex);
     }
 
     public static String toBinary(int number, Integer length) {

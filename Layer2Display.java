@@ -52,7 +52,7 @@ public class Layer2Display implements ActionListener, Layer2Listener {
         displayField.setText("Sending...");
         new Thread() {
             public void run() {
-                handler.send(new L2Frame(handler.getMacAddr(), Integer.valueOf(destinationAddressField.getText()), Integer.valueOf(typeField.getText()), Integer.valueOf(vlanField.getText()), payloadField.getText()));
+                handler.send(new L2Frame(Integer.valueOf(destinationAddressField.getText()), handler.getMacAddr(), Integer.valueOf(typeField.getText()), Integer.valueOf(vlanField.getText()), payloadField.getText()));
             }
         }.start();
     }

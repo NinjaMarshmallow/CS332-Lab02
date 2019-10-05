@@ -22,8 +22,11 @@ public class L2Handler implements BitListener {
 
     public void bitsReceived(BitHandler handler, String bits) {
         try {
+            System.out.println("Bits Received: " + bits);
             L2Frame frame = new L2Frame(bits);
-            if (frame.getDest() == macAddr || frame.getDest() == Integer.parseInt(L2Frame.BCAST_ADDR, 2)) {
+            System.out.println("Frame payload: " + frame.getPayload());
+            System.out.println("Received Frame: " + frame.toString());
+            if (frame.getDest() == macAddr || (frame.getDest() == Integer.parseInt(L2Frame.BCAST_ADDR, 2) && frame.getSource() != macAddr)) {
                 layer2Listener.frameReceived(L2Handler.this, frame);
             }
             else {
