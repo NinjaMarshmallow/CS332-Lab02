@@ -1,25 +1,49 @@
+/** L2Handler.java is the handler for an L2Frame.
+ * It sends L2Frames to layer 1 and creates L2Frames
+ * when bits are received from layer 1.
+ * Written by Jon Ellis and Jason Klaassen for CS332
+ */
 public class L2Handler implements BitListener {
     
     private BitHandler handler;
     private Layer2Listener layer2Listener;
     private Integer macAddr;
 
+    /** An explicit constructor for L2Handler using 
+     * the default values for the host and port
+     * @param macAddr the address for the L2Handler
+     */
     public L2Handler(Integer macAddr) {
         handler = new BitHandler();
         handler.setListener(this);
         this.macAddr = macAddr;
     }
 
+    /** An explicit constructor for L2Handler using 
+     * the explicit values for the host and port
+     * @param host the host for the BitHandler
+     * @param port the port for the BitHandler
+     * @param macAddr the address for the L2Handler
+     */
     public L2Handler(String host, int port, Integer macAddr) {
         handler = new BitHandler(host, port);
         handler.setListener(this);
         this.macAddr = macAddr;
     }
 
+    /** toString() returns the string conversion for 
+     *  the MAC address of the L2Handler
+     */
     public String toString() {
         return macAddr.toString();
     }
 
+    /** bitsReceived(handler, bits) takes a bitstring from Layer 1 
+     * and creates an L2Frame if the packet is for the L2Handler,
+     * otherwise it drops the packet
+     * @param handler the Layer 1 BitHandler that sent the bits
+     * @param bits the bitstring sent from Layer 1 to Layer 2
+     */
     public void bitsReceived(BitHandler handler, String bits) {
         try {
             System.out.println("Bits Received: " + bits);
@@ -38,14 +62,17 @@ public class L2Handler implements BitListener {
         }
     }
 
+    /** setListener(l) resgisters a Layer2Listener to the L2Handler
+     * @param l the Layer2Listener to be resistered
+     */
     public void setListener(Layer2Listener l) {
 		this.layer2Listener = l;
     }
-    
-    public Integer getMacAddr() {
-        return macAddr;
-    }
 
+    /** send(frame) sends a received frame to Layer 1.
+     * It waits until the handler is silent and then sends the frame
+     * @param frame the frame to be sent
+     */
     public void send(L2Frame frame) {
         while (!handler.isSilent()) {
             BitHandler.pause(BitHandler.HALFPERIOD);
@@ -57,6 +84,10 @@ public class L2Handler implements BitListener {
             // Should never get here
             e.printStackTrace();
         }
+    }
+
+    public Integer getMacAddr() {
+        return macAddr;
     }
 
 }
