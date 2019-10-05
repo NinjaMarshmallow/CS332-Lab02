@@ -1,9 +1,10 @@
-/** Layer2Display creates a JFrame window on screen that
- * holds text fields to build and send an L2Frame
- */
 import java.awt.event.*;
 import javax.swing.*;
 
+/** Layer2Display creates a JFrame window on screen that
+ * holds text fields to build and send an L2Frame
+ * Written by Jon Ellis and Jason Klaassen
+ */
 public class Layer2Display implements ActionListener, Layer2Listener {
     private L2Handler handler;
     private JTextField displayField;
