@@ -22,6 +22,7 @@ public class Test {
 		try {
 			testToBinary();
 			testToString();
+			testCalculateCheckSum();
 			System.out.println("L2Frame Passed.");
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -57,12 +58,26 @@ public class Test {
 		String vlan = L2Frame.toBinary(0, 2);
 		String payload = "010101010101";
 		String payloadSize = L2Frame.toBinary(payload.length(), 8);
+		String checksum = L2Frame.toBinary(1, 1);
 		String bitString = frame.toString();
 
-		if(!bitString.equals("0" + seven + three + type + vlan + payloadSize + payload)) {
+		if(!bitString.equals("0" + seven + three + type + vlan + payloadSize + checksum + payload)) {
 			throw new Exception("Test Failed: toString(): The String is not a valid frame.");
 		}
 		System.out.println("All Tests Passed for L2Frame.toString().");
 		
+	}
+
+	private static void testCalculateCheckSum() throws Exception {
+		L2Frame frame = new L2Frame(7, 3, 0, 0, "010101010111"); // 13 1's
+		if(L2Frame.calculateCheckSum(frame.toStringWithOutCheckSum()) == 1) throw new Exception("Test Failed: calculateCheckSum(): The Checksum is not valid. It is 1 when there are already even 1's.");
+		
+		L2Frame frame2 = new L2Frame(7, 3, 0, 0, "010101010101"); // 14 1's
+		if(L2Frame.calculateCheckSum(frame2.toStringWithOutCheckSum()) == 0) throw new Exception("Test Failed: calculateCheckSum(): The Checksum is not valid. It is 0 when there are an odd number of 1's.");
+		
+		L2Frame frame3 = new L2Frame(0, 0, 0, 0, ""); // 0 1's
+		if(L2Frame.calculateCheckSum(frame3.toStringWithOutCheckSum()) == 1) throw new Exception("Test Failed: calculateCheckSum(): The Checksum is not valid. It is 1 when there are zero 1's.");
+		
+		System.out.println("All Tests Passed for L2Frame.calculateCheckSum().");
 	}
 }

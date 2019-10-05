@@ -6,6 +6,7 @@ public class L2Frame {
     private final static int TYPE_LENGTH = 2;
     private final static int VLAN_LENGTH = 2;
     private final static int PAYLOAD_SIZE_LENGTH = 8;
+    private final static int CHECKSUM_LENGTH = 1;
     
 
 
@@ -19,6 +20,8 @@ public class L2Frame {
         this.vlanid = vlandid;
         this.payload = payload;
         this.payloadSize = payload.length();
+        this.checksum = calculateCheckSum(toStringWithOutCheckSum());
+        
     }
 
     public L2Frame(String bitString) throws IllegalArgumentException {
@@ -27,17 +30,34 @@ public class L2Frame {
         int typeEndIndex = srcEndIndex+L2Frame.TYPE_LENGTH;
         int vlanidEndIndex = typeEndIndex+L2Frame.VLAN_LENGTH;
         int payloadSizeEndIndex = vlanidEndIndex+L2Frame.PAYLOAD_SIZE_LENGTH;
+        int ChecksumEndIndex = payloadSizeEndIndex + 1;
         this.dest = Integer.parseInt(bitString.substring(1, destEndIndex), 2);
         this.source = Integer.parseInt(bitString.substring(destEndIndex, srcEndIndex), 2);
         this.type = Integer.parseInt(bitString.substring(srcEndIndex, typeEndIndex), 2);
         this.vlanid = Integer.parseInt(bitString.substring(typeEndIndex, vlanidEndIndex), 2);
         this.payloadSize = Integer.parseInt(bitString.substring(vlanidEndIndex, payloadSizeEndIndex), 2);
+        this.checksum = Integer.parseInt(bitString.substring(payloadSizeEndIndex, ChecksumEndIndex), 2);
         int bitStringLength = bitString.length();
-        int payloadEndIndex = payloadSizeEndIndex + this.payloadSize;
+        int payloadEndIndex = ChecksumEndIndex + this.payloadSize;
         if(payloadEndIndex > bitStringLength) {
             throw new IllegalArgumentException("This Frame is not valid");
         }
-        this.payload = bitString.substring(payloadSizeEndIndex, payloadEndIndex);
+        this.payload = bitString.substring(ChecksumEndIndex, payloadEndIndex);
+    }
+
+    public static int calculateCheckSum(String bitString) {
+        int count = 0, result = 0;
+        // Count the number of 1's
+        for(int i = 0; i < bitString.length(); i++) {
+            String character = bitString.substring(i, i + 1);
+            if(character.equals("1")) {
+                count += 1;
+            }
+            
+        }
+        // Set the result to make an even number of 1's including the checksum
+        result = count % 2;
+        return result;
     }
 
     public static String toBinary(int number, Integer length) {
@@ -50,6 +70,18 @@ public class L2Frame {
     }
 
     public String toString() {
+        String result = "0";
+        result += toBinary(this.dest, L2Frame.DEST_LENGTH);
+        result += toBinary(this.source, L2Frame.SRC_LENGTH);
+        result += toBinary(this.type, L2Frame.TYPE_LENGTH);
+        result += toBinary(this.vlanid, L2Frame.VLAN_LENGTH);
+        result += toBinary(this.payloadSize, L2Frame.PAYLOAD_SIZE_LENGTH);
+        result += toBinary(this.checksum, L2Frame.CHECKSUM_LENGTH);
+        result += this.payload;
+        return result;
+    }
+
+    public String toStringWithOutCheckSum() {
         String result = "0";
         result += toBinary(this.dest, L2Frame.DEST_LENGTH);
         result += toBinary(this.source, L2Frame.SRC_LENGTH);
