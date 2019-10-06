@@ -39,7 +39,7 @@ public class L2Frame {
         this.checksum = Integer.parseInt(bitString.substring(payloadSizeEndIndex, ChecksumEndIndex), 2);
         int bitStringLength = bitString.length();
         int payloadEndIndex = ChecksumEndIndex + this.payloadSize;
-        if(payloadEndIndex > bitStringLength) {
+        if(payloadEndIndex > bitStringLength || bitString.charAt(0) != '0' || calculateCheckSum(bitString) != 0) {
             throw new IllegalArgumentException("This Frame is not valid");
         }
         this.payload = bitString.substring(ChecksumEndIndex, payloadEndIndex);

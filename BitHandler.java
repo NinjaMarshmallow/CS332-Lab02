@@ -6,7 +6,7 @@ import java.security.InvalidParameterException;
  *  the LightPanel which turns it on and/or off.
  */
 public class BitHandler extends Thread {
-	public static final int HALFPERIOD = 500;
+	public static final int HALFPERIOD = 150;
 
 	private static final String SILENCE = "SILENCE";
 	private static final String EXPECT_ZERO = "EXPECT_ZERO";

@@ -9,8 +9,6 @@ public class Layer2Display implements ActionListener, Layer2Listener {
     private L2Handler handler;
     private JTextField displayField;
     private JTextField destinationAddressField;
-    private JTextField typeField;
-    private JTextField vlanField;
     private JTextField payloadField;
 
     /** An explicit constructor for a Layer2Display that creates
@@ -34,23 +32,13 @@ public class Layer2Display implements ActionListener, Layer2Listener {
         destinationAddressField.addActionListener(this);
         frame.getContentPane().add(destinationAddressField);
 
-        frame.getContentPane().add(new JLabel("Type:"));
-
-        typeField = new JTextField(20);
-        typeField.addActionListener(this);
-        frame.getContentPane().add(typeField);
-
-        frame.getContentPane().add(new JLabel("VLAN Id:"));
-
-        vlanField = new JTextField(20);
-        vlanField.addActionListener(this);
-        frame.getContentPane().add(vlanField);
-
         frame.getContentPane().add(new JLabel("Payload:"));
 
         payloadField = new JTextField(20);
         payloadField.addActionListener(this);
         frame.getContentPane().add(payloadField);
+
+        frame.getContentPane().add(new JLabel("VLAN Id: " + handler.getVlanid()));
 
         frame.pack();
         frame.setVisible(true);
@@ -62,7 +50,7 @@ public class Layer2Display implements ActionListener, Layer2Listener {
         displayField.setText("Sending...");
         new Thread() {
             public void run() {
-                handler.send(new L2Frame(Integer.valueOf(destinationAddressField.getText()), handler.getMacAddr(), Integer.valueOf(typeField.getText()), Integer.valueOf(vlanField.getText()), payloadField.getText()));
+                handler.send(new L2Frame(Integer.valueOf(destinationAddressField.getText()), handler.getMacAddr(), 0, handler.getVlanid(), payloadField.getText()));
             }
         }.start();
     }

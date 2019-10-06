@@ -1,10 +1,14 @@
+import java.util.HashSet;
+import java.util.Set;
+
 /** L2Handler is the handler for an L2Frame.
  * It sends L2Frames to layer 1 and creates L2Frames
  * when bits are received from layer 1.
  * Written by Jon Ellis and Jason Klaassen for CS332
  */
 public class L2Handler implements BitListener {
-    
+    private static Set<Integer> macAddrsUsed = new HashSet<>();
+
     private BitHandler handler;
     private Layer2Listener layer2Listener;
     private Integer macAddr;
@@ -16,10 +20,7 @@ public class L2Handler implements BitListener {
      * @param vlanid the VLAN assigned to the L2Handler
      */
     public L2Handler(Integer macAddr, Integer vlanid) {
-        handler = new BitHandler();
-        handler.setListener(this);
-        this.macAddr = macAddr;
-        this.vlanid = vlanid;
+        this("localhost", LightSystem.DEFAULT_PORT, macAddr, vlanid);
     }
 
     /** An explicit constructor for L2Handler using 
@@ -30,6 +31,9 @@ public class L2Handler implements BitListener {
      * @param vlanid the VLAN assigned to the L2Handler
      */
     public L2Handler(String host, int port, Integer macAddr, Integer vlanid) {
+        while (!macAddrsUsed.add(macAddr)) {
+            macAddr++;
+        }
         handler = new BitHandler(host, port);
         handler.setListener(this);
         this.macAddr = macAddr;
@@ -53,10 +57,8 @@ public class L2Handler implements BitListener {
         try {
             System.out.println("Bits Received: " + bits);
             L2Frame frame = new L2Frame(bits);
-            System.out.println("Frame payload: " + frame.getPayload());
-            System.out.println("Received Frame: " + frame.toString());
-            if (frame.getDest() == macAddr || 
-               (frame.getDest() == Integer.parseInt(L2Frame.BCAST_ADDR, 2) && frame.getSource() != macAddr) &&
+            if ((frame.getDest() == macAddr || 
+               (frame.getDest() == Integer.parseInt(L2Frame.BCAST_ADDR, 2) && frame.getSource() != macAddr)) &&
                (frame.getVlanid() == 0 || frame.getVlanid() == vlanid)) {
                 layer2Listener.frameReceived(L2Handler.this, frame);
             }
