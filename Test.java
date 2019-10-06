@@ -17,7 +17,9 @@ public class Test {
 	private static void runTests() {
 		testL2Frame();
 	}
-
+	/**
+	 * Tests the L2Frame Class and its functions
+	 */
 	private static void testL2Frame() {
 		try {
 			testToBinary();
@@ -28,7 +30,10 @@ public class Test {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * Tests the toBinary function of L2Frame
+	 * @throws Exception when a test is failed
+	 */
 	private static void testToBinary() throws Exception {
 		Integer five = 5, seven = 7, fifteen = 15;
 		Integer length = 4;
@@ -45,11 +50,20 @@ public class Test {
 		if(!bitString.equals("1111")) {
 			throw new Exception("Test Failed: L2Frame.toBinary(): Integer 15 != '1111'");
 		}
+		
+		try {
+			bitString = L2Frame.toBinary(8, 3);
+			throw new Exception("Test Failed: L2Frame.toBinary(): The Number given is too large for the length");
+		} catch(IllegalArgumentException e) {
+		}
 		System.out.println("All Tests Passed for L2Frame.toBinary().");
 		
 		
 	}
-
+	/**
+	 * Tests the toString function of L2Frame
+	 * @throws Exception when a test is failed
+	 */
 	private static void testToString() throws Exception {
 		L2Frame frame = new L2Frame(7, 3, 0, 0, "010101010101");
 		String seven = L2Frame.toBinary(7, 4);
@@ -68,6 +82,10 @@ public class Test {
 		
 	}
 
+	/**
+	 * Tests the calculateCheckSum function of L2Frame
+	 * @throws Exception when a test is failed
+	 */
 	private static void testCalculateCheckSum() throws Exception {
 		L2Frame frame = new L2Frame(7, 3, 0, 0, "010101010111"); // 13 1's
 		if(L2Frame.calculateCheckSum(frame.toStringWithOutCheckSum()) == 1) throw new Exception("Test Failed: calculateCheckSum(): The Checksum is not valid. It is 1 when there are already even 1's.");
